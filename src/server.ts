@@ -19,7 +19,7 @@ declare module 'socket.io' {
 
 const app = express();
 const server = createServer(app);
-const port = 3000;
+const port = 8463;
 const io = new Server(server);
 
 const waitForEvent = (emitter: EventEmitter, event: string, timeout: number): Promise<unknown[]> => {
@@ -33,6 +33,8 @@ const waitForEvent = (emitter: EventEmitter, event: string, timeout: number): Pr
 		})
 	})
 }
+
+app.set('trust proxy', true)
 
 app.get('/', (req: Request, res: Response) => {
 	res.sendFile(path.resolve("static/index.html"));

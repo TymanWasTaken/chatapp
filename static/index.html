@@ -15,7 +15,14 @@
 				room: room
 			})
 			socket.on("message", (data) => {
-				console.log("MESSAGE: " + data.messageData.message)
+				console.log("new message:")
+				console.log(data)
+				document.getElementById("lastMessage").innerHTML = data.messageData.message
+				document.getElementById("lastMessageAuthor").innerHTML = data.clientData.username
+			})
+			socket.on("stats", (data) => {
+				console.log("new stats data:")
+				console.log(data)
 			})
 			const sendMessage = () => {
 				if (socket.disconnected) {
@@ -25,10 +32,21 @@
 					message: document.getElementById("msg").value
 				})
 			}
+			const loadRoomStats = () => {
+				if (socket.disconnected) {
+					alert("Socket is disconnected but ok")
+				}
+				socket.emit("requestStats")
+			}
 		</script>
 	</head>
 	<body>
 		<input type="text" id="msg" placeholder="Enter message..."></input>
 		<button onclick="sendMessage()">Send</button>
+		<button onclick="loadRoomStats()">Load room stats</button>
+		<p>
+			Last message: <span id="lastMessage">no message yet</span>
+			Author: <span id="lastMessageAuthor">no message yet</span>
+		</p>
 	</body>
 </html>
